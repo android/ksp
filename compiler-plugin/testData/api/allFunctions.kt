@@ -18,60 +18,62 @@
 // WITH_RUNTIME
 // TEST PROCESSOR: AllFunctionsProcessor
 // EXPECTED:
-// class: KotlinInterfaceWithProperty
-// <init>(): C
-// <init>(): JavaImplOfKotlinInterface
-// a
-// aFromC
+// class: C
 // aFromC
 // bFromC
-// bar(): kotlin.Boolean
-// baz(kotlin.String,kotlin.String(hasDefault),kotlin.String(hasDefault)): kotlin.Boolean
 // cFromC
-// cFromC
-// class: C
+// <init>(): C
+// equals(kotlin.Any): kotlin.Boolean
+// hashCode(): kotlin.Int
+// javaListFun(): kotlin.collections.MutableCollection
+// javaPrivateFun(): kotlin.Unit
+// javaStrFun(): kotlin.String
+// toString(): kotlin.String
 // class: Data
-// class: Foo
-// class: JavaImplOfKotlinInterface
+// a
+// <init>(kotlin.String): Data
 // component1(): kotlin.String
-// contains(kotlin.Number): kotlin.Boolean
-// containsAll(kotlin.collections.Collection): kotlin.Boolean
 // copy(kotlin.String(hasDefault)): Data
 // equals(kotlin.Any): kotlin.Boolean
-// equals(kotlin.Any): kotlin.Boolean
-// equals(kotlin.Any): kotlin.Boolean
-// equals(kotlin.Any): kotlin.Boolean
+// hashCode(): kotlin.Int
+// toString(): kotlin.String
+// class: Foo
+// aFromC
+// cFromC
+// size
+// <init>(): Foo
+// bar(): kotlin.Boolean
+// baz(kotlin.String,kotlin.String(hasDefault),kotlin.String(hasDefault)): kotlin.Boolean
+// contains(kotlin.Number): kotlin.Boolean
+// containsAll(kotlin.collections.Collection): kotlin.Boolean
 // equals(kotlin.Any): kotlin.Boolean
 // forEach(java.util.function.Consumer): kotlin.Unit
 // get(kotlin.Int): kotlin.Number
-// hashCode(): kotlin.Int
-// hashCode(): kotlin.Int
-// hashCode(): kotlin.Int
-// hashCode(): kotlin.Int
 // hashCode(): kotlin.Int
 // indexOf(kotlin.Number): kotlin.Int
 // isEmpty(): kotlin.Boolean
 // iterator(): kotlin.collections.Iterator
 // javaListFun(): kotlin.collections.List
-// javaListFun(): kotlin.collections.MutableCollection
-// javaPrivateFun(): kotlin.Unit
-// javaStrFun(): kotlin.String
 // javaStrFun(): kotlin.String
 // lastIndexOf(kotlin.Number): kotlin.Int
 // listIterator(): kotlin.collections.ListIterator
 // listIterator(kotlin.Int): kotlin.collections.ListIterator
 // parallelStream(): java.util.stream.Stream
-// size
 // spliterator(): java.util.Spliterator
 // stream(): java.util.stream.Stream
 // subList(kotlin.Int,kotlin.Int): kotlin.collections.List
 // toString(): kotlin.String
-// toString(): kotlin.String
-// toString(): kotlin.String
-// toString(): kotlin.String
-// toString(): kotlin.String
+// class: JavaImplOfKotlinInterface
 // x
+// <init>(): JavaImplOfKotlinInterface
+// equals(kotlin.Any): kotlin.Boolean
+// hashCode(): kotlin.Int
+// toString(): kotlin.String
+// class: KotlinInterfaceWithProperty
 // x
+// equals(kotlin.Any): kotlin.Boolean
+// hashCode(): kotlin.Int
+// toString(): kotlin.String
 // END
 // FILE: a.kt
 abstract class Foo : C(), List<out Number> {

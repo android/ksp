@@ -37,7 +37,7 @@ class ArrayTest {
 }
 
 // FILE: K.kt
-@file:kotlin.Suppress("C", "D", "Suppress", "Any")
+@file:kotlin.Suppress("C", "D", "Suppress", "Any", "ArrayTest")
 
 open class C
 open class D : C()

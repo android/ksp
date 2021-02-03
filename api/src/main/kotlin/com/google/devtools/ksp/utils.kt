@@ -47,7 +47,7 @@ fun Resolver.getClassDeclarationByName(name: String): KSClassDeclaration? = getC
 /**
  * Get functions directly declared inside the class declaration.
  *
- * What are included: member functions, extension functions declared inside it, etc.
+ * What are included: member functions, constructors, extension functions declared inside it, etc.
  * What are NOT included: inherited functions, extension functions declared outside it.
  */
 fun KSClassDeclaration.getDeclaredFunctions(): List<KSFunctionDeclaration> {
@@ -65,11 +65,9 @@ fun KSClassDeclaration.getDeclaredProperties(): List<KSPropertyDeclaration> {
 }
 
 fun KSClassDeclaration.getConstructors(): List<KSFunctionDeclaration> {
-    val functions = if (this.origin == Origin.JAVA) this.getAllFunctions() else this.getDeclaredFunctions()
-    return functions.filter { it.simpleName.asString() == this.simpleName.asString() || it.simpleName.asString() == "<init>"}
-            .let { constructors ->
-                this.primaryConstructor?.let { constructors.plus(it) } ?: constructors
-            }
+    return getDeclaredFunctions().filter {
+        it.isConstructor()
+    }
 }
 
 /**
@@ -241,7 +239,11 @@ fun KSDeclaration.isVisibleFrom(other: KSDeclaration): Boolean {
         } ?: false
         else -> false
     }
-
 }
+
+/**
+ * Returns `true` if this is a constructor function.
+ */
+fun KSFunctionDeclaration.isConstructor() = this.simpleName.asString() == "<init>"
 
 const val ExceptionMessage = "please file a bug at https://github.com/google/ksp/issues/new"

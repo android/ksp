@@ -371,7 +371,13 @@ class ResolverImpl(
                     descriptor
                 }
             }
-            is KSConstructorSyntheticImpl -> resolveClassDeclaration(function.ksClassDeclaration)?.unsubstitutedPrimaryConstructor
+            is KSConstructorSyntheticImpl -> {
+                // we might create synthetic constructor when it is not declared in code
+                // it is either for kotlin, where we can use primary constructor, or for java
+                // where we can use the only available constructor
+                val resolved = resolveClassDeclaration(function.ksClassDeclaration)
+                resolved?.unsubstitutedPrimaryConstructor ?: resolved?.constructors?.singleOrNull()
+            }
             else -> throw IllegalStateException("unexpected class: ${function.javaClass}")
         } as FunctionDescriptor?
     }

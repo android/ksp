@@ -35,6 +35,7 @@
 // inlineReturningFun -> inlineReturningFun-HRn7Rpw
 // internalInlineReceivingFun -> internalInlineReceivingFun-E03SJzc$mainModule
 // internalInlineReturningFun -> internalInlineReturningFun-HRn7Rpw$mainModule
+// <init> -> <init>
 // fileLevelInternalFun -> fileLevelInternalFun
 // fileLevelInlineReceivingFun -> fileLevelInlineReceivingFun-E03SJzc
 // fileLevelInlineReturningFun -> fileLevelInlineReturningFun
@@ -64,6 +65,7 @@
 // internalInlineReceivingFun -> internalInlineReceivingFun-mQ73O9w$lib
 // internalInlineReturningFun -> internalInlineReturningFun-b_MPbnQ$lib
 // normalFun -> normalFun
+// <init> -> <init>
 // END
 // MODULE: lib
 // FILE: input.kt

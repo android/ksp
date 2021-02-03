@@ -78,7 +78,11 @@ class KSClassDeclarationDescriptorImpl private constructor(val descriptor: Class
     }
 
     override val declarations: List<KSDeclaration> by lazy {
-        listOf(descriptor.unsubstitutedMemberScope.getDescriptorsFiltered(), descriptor.staticScope.getDescriptorsFiltered()).flatten()
+        listOf(
+            descriptor.unsubstitutedMemberScope.getDescriptorsFiltered(),
+            descriptor.staticScope.getDescriptorsFiltered(),
+            descriptor.constructors
+        ).flatten()
             .filter {
                 it is MemberDescriptor
                         && it.visibility != DescriptorVisibilities.INHERITED
@@ -125,12 +129,11 @@ class KSClassDeclarationDescriptorImpl private constructor(val descriptor: Class
     }
 }
 
-internal fun ClassDescriptor.getAllFunctions(explicitConstructor: Boolean = false): List<KSFunctionDeclaration> {
+internal fun ClassDescriptor.getAllFunctions(): List<KSFunctionDeclaration> {
     ResolverImpl.instance.incrementalContext.recordLookupForGetAllFunctions(this)
     val functionDescriptors = unsubstitutedMemberScope.getDescriptorsFiltered(DescriptorKindFilter.FUNCTIONS).toList()
             .filter { (it as FunctionDescriptor).visibility != DescriptorVisibilities.INVISIBLE_FAKE }.toMutableList()
-    if (explicitConstructor)
-        functionDescriptors += constructors
+    functionDescriptors += constructors
     return functionDescriptors.map { KSFunctionDeclarationDescriptorImpl.getCached(it as FunctionDescriptor) }
 }
 

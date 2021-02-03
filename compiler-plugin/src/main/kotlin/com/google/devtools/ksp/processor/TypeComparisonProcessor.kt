@@ -72,6 +72,6 @@ open class TypeCollector : KSTopDownVisitor<MutableCollection<KSType>, Unit>() {
 
     override fun visitTypeReference(typeReference: KSTypeReference, data: MutableCollection<KSType>) {
         super.visitTypeReference(typeReference, data)
-        typeReference.resolve()?.let { data.add(it) }
+        typeReference.resolve().let { data.add(it) }
     }
 }

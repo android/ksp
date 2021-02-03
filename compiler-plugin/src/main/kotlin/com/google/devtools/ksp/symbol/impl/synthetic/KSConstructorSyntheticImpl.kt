@@ -18,6 +18,7 @@
 
 package com.google.devtools.ksp.symbol.impl.synthetic
 
+import com.google.devtools.ksp.isPublic
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.symbol.impl.KSObjectCache
 import com.google.devtools.ksp.symbol.impl.kotlin.KSNameImpl
@@ -54,7 +55,11 @@ class KSConstructorSyntheticImpl(val ksClassDeclaration: KSClassDeclaration) : K
         ksClassDeclaration
     }
 
-    override val returnType: KSTypeReference? = null
+    override val returnType: KSTypeReference by lazy {
+        KSTypeReferenceSyntheticImpl(
+            ksClassDeclaration.asStarProjectedType()
+        )
+    }
 
     override val annotations: List<KSAnnotation> = emptyList()
 
@@ -68,7 +73,14 @@ class KSConstructorSyntheticImpl(val ksClassDeclaration: KSClassDeclaration) : K
         ksClassDeclaration.location
     }
 
-    override val modifiers: Set<Modifier> = emptySet()
+    override val modifiers: Set<Modifier> by lazy {
+        // add public if parent class is public
+        if (ksClassDeclaration.isPublic()) {
+            setOf(Modifier.FINAL, Modifier.PUBLIC)
+        } else {
+            setOf(Modifier.FINAL)
+        }
+    }
 
     override val origin: Origin = Origin.SYNTHETIC
 

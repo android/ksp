@@ -48,7 +48,16 @@ class NameCollector : KSTopDownVisitor<MutableCollection<String>, Unit>() {
     }
 
     override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: MutableCollection<String>) {
-        function.packageName.asString().let { data.add("${if (it == "") "<no name>" else it}:${function.simpleName.asString()}") }
+        function.packageName.asString().let { packageName ->
+            val packageNamePrefix = if (packageName == "") "<no name>" else packageName
+            val parentDeclaration = function.parentDeclaration
+            val parentPrefix = if (parentDeclaration == null) {
+                ""
+            } else {
+                "${parentDeclaration.simpleName.asString()}."
+            }
+            data.add("$packageNamePrefix:$parentPrefix${function.simpleName.asString()}")
+        }
         super.visitFunctionDeclaration(function, data)
     }
 

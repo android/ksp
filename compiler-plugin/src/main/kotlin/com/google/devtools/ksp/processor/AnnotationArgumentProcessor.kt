@@ -19,6 +19,7 @@
 package com.google.devtools.ksp.processor
 
 import com.google.devtools.ksp.getClassDeclarationByName
+import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
@@ -38,7 +39,13 @@ class AnnotationArgumentProcessor : AbstractTestProcessor() {
         val C = resolver.getClassDeclarationByName("C")!!
         C.annotations.first().arguments.map { results.add(it.value.toString()) }
         val ThrowsClass = resolver.getClassDeclarationByName("ThrowsClass")!!
-        ThrowsClass.declarations.map { it.annotations.single().annotationType.resolve().declaration.let { results.add(it.toString()) } }
+        ThrowsClass.declarations.filter {
+            it.simpleName.asString() == "throwsException"
+        }.map {
+            it.annotations.single().annotationType.resolve().declaration.let {
+                results.add(it.toString())
+            }
+        }
     }
 
     override fun toResult(): List<String> {

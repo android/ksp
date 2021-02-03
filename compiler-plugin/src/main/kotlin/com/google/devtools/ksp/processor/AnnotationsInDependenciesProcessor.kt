@@ -46,9 +46,12 @@ class AnnotationsInDependenciesProcessor : AbstractTestProcessor() {
 
     private fun KSAnnotated.toSignature(): String {
         return when(this) {
-            is KSClassDeclaration -> (qualifiedName ?: simpleName).asString()
-            is KSDeclaration -> simpleName.asString()
-            is KSValueParameter -> name?.asString() ?: "no-name-value-parameter"
+            is KSClassDeclaration -> "class " + (qualifiedName ?: simpleName).asString()
+            is KSPropertyDeclaration -> "property ${simpleName.asString()}"
+            is KSFunctionDeclaration -> "function ${simpleName.asString()}"
+            is KSValueParameter -> name?.let {
+                "parameter ${it.asString()}"
+            } ?: "no-name-value-parameter"
             is KSPropertyAccessor -> receiver.toSignature()
             else -> {
                 error("unexpected annotated")

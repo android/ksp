@@ -93,7 +93,7 @@ class OverrideeProcessor: AbstractTestProcessor() {
 
     companion object {
         // ignore these methods as we receive syntetics of it from compiled code
-        private val IGNORED_METHOD_NAMES = listOf("equals", "hashCode", "toString")
+        private val IGNORED_METHOD_NAMES = listOf("equals", "hashCode", "toString", "<init>")
     }
 }
 

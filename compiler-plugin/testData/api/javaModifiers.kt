@@ -18,25 +18,40 @@
 // TEST PROCESSOR: JavaModifierProcessor
 // EXPECTED:
 // C: PUBLIC ABSTRACT
-// staticStr: PRIVATE
-// s1: FINAL JAVA_TRANSIENT
-// i1: PROTECTED JAVA_STATIC JAVA_VOLATILE
-// NestedC: PUBLIC JAVA_STATIC
-// InnerC: PUBLIC
-// intFun: JAVA_SYNCHRONIZED JAVA_DEFAULT
-// foo: ABSTRACT JAVA_STRICT
+// C.staticStr: PRIVATE
+// C.s1: FINAL JAVA_TRANSIENT
+// C.i1: PROTECTED JAVA_STATIC JAVA_VOLATILE
+// C.NestedC: PUBLIC JAVA_STATIC
+// NestedC.<init>: FINAL PUBLIC
+// C.InnerC: PUBLIC
+// InnerC.<init>: FINAL PUBLIC
+// C.intFun: JAVA_SYNCHRONIZED JAVA_DEFAULT
+// C.foo: ABSTRACT JAVA_STRICT
+// C.<init>: FINAL PUBLIC
 // OuterJavaClass: PUBLIC
-// InnerJavaClass: PUBLIC
-// NestedJavaClass: PUBLIC JAVA_STATIC
+// OuterJavaClass.InnerJavaClass: PUBLIC
+// InnerJavaClass.<init>: FINAL PUBLIC
+// OuterJavaClass.NestedJavaClass: PUBLIC JAVA_STATIC
+// NestedJavaClass.<init>: FINAL PUBLIC
+// OuterJavaClass.<init>: FINAL PUBLIC
 // OuterKotlinClass: OPEN
-// InnerKotlinClass: INNER
-// NestedKotlinClass: OPEN
+// OuterKotlinClass.InnerKotlinClass: INNER
+// InnerKotlinClass.<init>: FINAL PUBLIC
+// OuterKotlinClass.NestedKotlinClass: OPEN
+// NestedKotlinClass.<init>: FINAL PUBLIC
+// OuterKotlinClass.<init>: FINAL PUBLIC
 // DependencyOuterJavaClass: OPEN PUBLIC
-// DependencyNestedJavaClass: OPEN PUBLIC
-// DependencyInnerJavaClass: OPEN PUBLIC INNER
+// DependencyOuterJavaClass.DependencyNestedJavaClass: OPEN PUBLIC
+// DependencyNestedJavaClass.<init>: FINAL PUBLIC
+// DependencyOuterJavaClass.DependencyInnerJavaClass: OPEN PUBLIC INNER
+// DependencyInnerJavaClass.<init>: FINAL PUBLIC
+// DependencyOuterJavaClass.<init>: FINAL PUBLIC
 // DependencyOuterKotlinClass: OPEN PUBLIC
-// DependencyInnerKotlinClass: FINAL PUBLIC INNER
-// DependencyNestedKotlinClass: OPEN PUBLIC
+// DependencyOuterKotlinClass.DependencyInnerKotlinClass: FINAL PUBLIC INNER
+// DependencyInnerKotlinClass.<init>: FINAL PUBLIC
+// DependencyOuterKotlinClass.DependencyNestedKotlinClass: OPEN PUBLIC
+// DependencyNestedKotlinClass.<init>: FINAL PUBLIC
+// DependencyOuterKotlinClass.<init>: FINAL PUBLIC
 // END
 // MODULE: module1
 // FILE: DependencyOuterJavaClass.java

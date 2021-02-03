@@ -21,18 +21,18 @@
 // synthetic constructor for Cls
 // <null>
 // <null>
-// JavaClass,JavaClass,JavaClass
+// <init>,<init>,<init>
 // readOnly.get(): SYNTHETIC annotations from property: GetAnno
 // readOnly.getter.owner: readOnly: KOTLIN
 // readWrite.get(): KOTLIN
 // readWrite.set(): SYNTHETIC annotations from property: SetAnno
-// Data
+// <init>
 // comp1.get(): SYNTHETIC
 // comp2.get(): SYNTHETIC
 // comp2.set(): SYNTHETIC
 // GetAnno
-// ClassWithoutImplicitPrimaryConstructor
 // <init>
+// synthetic constructor for ImplictConstructorJava
 // END
 // FILE: a.kt
 annotation class GetAnno

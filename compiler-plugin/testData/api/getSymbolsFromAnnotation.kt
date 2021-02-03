@@ -5,21 +5,21 @@
 // propertyFoo
 // functionFoo
 // constructorParameterFoo
-// Foo
+// <init>
 // ==== Anno in depth ====
 // Foo
 // propertyFoo
 // functionFoo
 // local
 // constructorParameterFoo
-// Foo
+// <init>
 // ==== Bnno superficial====
 // File: Foo.kt
-// Foo
+// <init>
 // propertyFoo.getter()
 // ==== Bnno in depth ====
 // File: Foo.kt
-// Foo
+// <init>
 // propertyFoo.getter()
 // END
 //FILE: annotations.kt

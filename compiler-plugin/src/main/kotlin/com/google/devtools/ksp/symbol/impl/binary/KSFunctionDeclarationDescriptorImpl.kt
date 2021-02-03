@@ -30,6 +30,7 @@ import com.google.devtools.ksp.symbol.impl.findClosestOverridee
 import com.google.devtools.ksp.symbol.impl.toFunctionKSModifiers
 import com.google.devtools.ksp.symbol.impl.toKSFunctionDeclaration
 import com.google.devtools.ksp.symbol.impl.toKSModifiers
+import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.load.java.isFromJava
 import org.jetbrains.kotlin.resolve.OverridingUtil
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
@@ -62,8 +63,12 @@ class KSFunctionDeclarationDescriptorImpl private constructor(val descriptor: Fu
     }
 
     override val functionKind: FunctionKind by lazy {
+
         when {
-            descriptor.dispatchReceiverParameter == null -> if (descriptor.isFromJava) FunctionKind.STATIC else FunctionKind.TOP_LEVEL
+            descriptor.dispatchReceiverParameter == null -> when {
+                descriptor.isFromJava -> FunctionKind.STATIC
+                else -> FunctionKind.TOP_LEVEL
+            }
             !descriptor.name.isSpecial && !descriptor.name.asString().isEmpty() -> FunctionKind.MEMBER
             descriptor is AnonymousFunctionDescriptor -> FunctionKind.ANONYMOUS
             else -> throw IllegalStateException("Unable to resolve FunctionKind for ${descriptor.fqNameSafe}, $ExceptionMessage")

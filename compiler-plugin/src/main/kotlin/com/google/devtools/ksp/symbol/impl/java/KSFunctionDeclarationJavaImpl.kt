@@ -26,6 +26,7 @@ import com.google.devtools.ksp.symbol.impl.kotlin.KSNameImpl
 import com.intellij.lang.jvm.JvmModifier
 import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.impl.source.PsiClassReferenceType
 
 class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) : KSFunctionDeclaration, KSDeclarationJavaImpl(),
     KSExpectActual by KSExpectActualNoImpl() {
@@ -56,7 +57,10 @@ class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) : KS
 
     override val extensionReceiver: KSTypeReference? = null
 
-    override val functionKind: FunctionKind = if (psi.hasModifier(JvmModifier.STATIC)) FunctionKind.STATIC else FunctionKind.MEMBER
+    override val functionKind: FunctionKind = when {
+        psi.hasModifier(JvmModifier.STATIC) -> FunctionKind.STATIC
+        else -> FunctionKind.MEMBER
+    }
 
     override val isAbstract: Boolean by lazy {
         this.modifiers.contains(Modifier.ABSTRACT) ||
@@ -81,15 +85,29 @@ class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) : KS
     }
 
     override val returnType: KSTypeReference? by lazy {
-        if (psi.returnType != null) {
-            KSTypeReferenceJavaImpl.getCached(psi.returnType!!)
-        } else {
-            null
+        when {
+            psi.returnType != null -> {
+                KSTypeReferenceJavaImpl.getCached(psi.returnType!!)
+            }
+            psi.isConstructor -> {
+                psi.containingClass?.let { containingClass ->
+                    KSTypeReferenceLiteJavaImpl.getCached(
+                        KSClassDeclarationJavaImpl.getCached(containingClass).asStarProjectedType()
+                    )
+                }
+            }
+            else -> {
+                null
+            }
         }
     }
 
     override val simpleName: KSName by lazy {
-        KSNameImpl.getCached(psi.name)
+        if (psi.isConstructor) {
+            KSNameImpl.getCached("<init>")
+        } else {
+            KSNameImpl.getCached(psi.name)
+        }
     }
 
     override val typeParameters: List<KSTypeParameter> by lazy {

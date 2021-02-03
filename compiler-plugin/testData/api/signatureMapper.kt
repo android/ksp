@@ -18,13 +18,13 @@
 // TEST PROCESSOR: MapSignatureProcessor
 // EXPECTED:
 // LCls;
-// ()V
-// I
-// ()Ljava/lang/String;
+// a: I
+// foo: ()Ljava/lang/String;
+// <init>: ()V
 // LJavaIntefaceWithVoid;
-// ()Ljava/lang/Void;
+// getVoid: ()Ljava/lang/Void;
 // LJavaClass;
-// ()V
+// <init>: ()V
 // END
 
 // FILE: Cls.kt

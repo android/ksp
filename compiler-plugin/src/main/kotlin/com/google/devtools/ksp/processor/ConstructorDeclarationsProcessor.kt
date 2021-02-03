@@ -18,11 +18,13 @@
 
 package com.google.devtools.ksp.processor
 
+import com.google.devtools.ksp.getClassDeclarationByName
+import com.google.devtools.ksp.getConstructors
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.*
 
-class AllFunctionsProcessor : AbstractTestProcessor() {
-    val visitor = AllFunctionsVisitor()
+class ConstructorDeclarationsProcessor : AbstractTestProcessor() {
+    val visitor = ConstructorsVisitor()
 
     override fun toResult(): List<String> {
         return visitor.toResult()
@@ -30,16 +32,28 @@ class AllFunctionsProcessor : AbstractTestProcessor() {
 
     override fun process(resolver: Resolver) {
         resolver.getAllFiles().map { it.accept(visitor, Unit) }
+        val classNames = visitor.classNames().toList() // copy
+        // each class has a cousin in the lib package, visit them as well, make sure
+        // we report the same structure when they are compiled code as well
+        classNames.forEach {
+            resolver
+                .getClassDeclarationByName("lib.${it.simpleName.asString()}")
+                ?.accept(visitor, Unit)
+        }
     }
 
-    class AllFunctionsVisitor : KSVisitorVoid() {
-        private val declarationsByClass = mutableMapOf<String, MutableList<String>>()
+    class ConstructorsVisitor : KSVisitorVoid() {
+        private val declarationsByClass = LinkedHashMap<KSClassDeclaration, MutableList<String>>()
+        fun classNames() = declarationsByClass.keys
         fun toResult() : List<String> {
             return declarationsByClass.entries
                 .sortedBy {
-                    it.key
+                    // sort by simple name to get cousin classes next to each-other
+                    // since we traverse the lib after main, lib will be the second one
+                    // because sortedBy is stable sort
+                    it.key.simpleName.asString()
                 }.flatMap {
-                    listOf(it.key) + it.value
+                    listOf("class: " + it.key.qualifiedName!!.asString()) + it.value
                 }
         }
         fun KSFunctionDeclaration.toSignature(): String {
@@ -52,24 +66,20 @@ class AllFunctionsProcessor : AbstractTestProcessor() {
                             }
                         }
                     }.joinToString(",")})" +
-                    ": ${this.returnType?.resolve()?.declaration?.qualifiedName?.asString() ?: ""}"
+                    ": ${this.returnType?.resolve()?.declaration?.qualifiedName?.asString()
+                        ?: "<no-return>"}"
         }
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
             val declarations = mutableListOf<String>()
-            // first add properties
             declarations.addAll(
-                classDeclaration.getAllProperties().map {
-                    it.toString()
-                }.sorted()
-            )
-            // then add functions
-            declarations.addAll(
-                classDeclaration.getAllFunctions().map {
+                classDeclaration.getConstructors().map {
                     it.toSignature()
                 }.sorted()
             )
-            declarationsByClass["class: ${classDeclaration.simpleName.asString()}"] = declarations
+            // TODO add some assertions that if we go through he path of getDeclarations
+            //  we still find the same constructors
+            declarationsByClass[classDeclaration] = declarations
         }
 
         override fun visitFile(file: KSFile, data: Unit) {

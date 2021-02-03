@@ -2,6 +2,7 @@ package com.google.devtools.ksp.processor
 
 import com.google.devtools.ksp.getClassDeclarationByName
 import com.google.devtools.ksp.getDeclaredFunctions
+import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
@@ -107,7 +108,7 @@ class AsMemberOfProcessor : AbstractTestProcessor() {
     private fun addToResults(resolver: Resolver, baseClass: KSClassDeclaration, child: KSType) {
         results.add(child.toSignature())
         val baseProperties = baseClass.getAllProperties()
-        val baseFunction = baseClass.getDeclaredFunctions()
+        val baseFunction = baseClass.getDeclaredFunctions().filterNot { it.isConstructor() }
         results.addAll(
             baseProperties.map { property ->
                 val typeSignature = resolver.asMemberOfSignature(

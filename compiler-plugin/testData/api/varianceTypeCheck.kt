@@ -18,18 +18,27 @@
 // WITH_RUNTIME
 // TEST PROCESSOR: TypeComparisonProcessor
 // EXPECTED:
+// Foo<*> ?= Foo<*> : true
+// Foo<*> ?= Foo<A> : true
+// Foo<*> ?= Foo<C> : true
+// Foo<*> ?= Foo<in B> : true
+// Foo<*> ?= Foo<out B> : true
+// Foo<A> ?= Foo<*> : false
 // Foo<A> ?= Foo<A> : true
 // Foo<A> ?= Foo<C> : false
 // Foo<A> ?= Foo<in B> : false
 // Foo<A> ?= Foo<out B> : false
+// Foo<C> ?= Foo<*> : false
 // Foo<C> ?= Foo<A> : false
 // Foo<C> ?= Foo<C> : true
 // Foo<C> ?= Foo<in B> : false
 // Foo<C> ?= Foo<out B> : false
+// Foo<in B> ?= Foo<*> : false
 // Foo<in B> ?= Foo<A> : true
 // Foo<in B> ?= Foo<C> : false
 // Foo<in B> ?= Foo<in B> : true
 // Foo<in B> ?= Foo<out B> : false
+// Foo<out B> ?= Foo<*> : false
 // Foo<out B> ?= Foo<A> : false
 // Foo<out B> ?= Foo<C> : true
 // Foo<out B> ?= Foo<in B> : false

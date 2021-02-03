@@ -43,6 +43,14 @@ class KSFunctionDeclarationImpl private constructor(val ktFunction: KtFunction) 
         return descriptor?.findClosestOverridee()?.toKSFunctionDeclaration()
     }
 
+    override val simpleName: KSName by lazy {
+        if (ktFunction is KtConstructor<*>) {
+            KSNameImpl.getCached("<init>")
+        } else {
+            KSNameImpl.getCached(ktFunction.name!!)
+        }
+    }
+
     override val declarations: List<KSDeclaration> by lazy {
         if (!ktFunction.hasBlockBody()) {
             emptyList()
@@ -64,7 +72,7 @@ class KSFunctionDeclarationImpl private constructor(val ktFunction: KtFunction) 
             FunctionKind.TOP_LEVEL
         } else {
             when (ktFunction) {
-                is KtNamedFunction, is KtPrimaryConstructor, is KtSecondaryConstructor -> FunctionKind.MEMBER
+                is KtNamedFunction, is KtConstructor<*> -> FunctionKind.MEMBER
                 is KtFunctionLiteral -> if (ktFunction.node.findChildByType(KtTokens.FUN_KEYWORD) != null) FunctionKind.ANONYMOUS else FunctionKind.LAMBDA
                 else -> throw IllegalStateException("Unexpected psi type ${ktFunction.javaClass}, $ExceptionMessage")
             }

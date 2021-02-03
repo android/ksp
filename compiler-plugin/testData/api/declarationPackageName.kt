@@ -19,18 +19,25 @@
 // EXPECTED:
 // test.pack:Outer
 // test.pack:Val
-// test.pack:Foo
+// test.pack:Outer.Foo
 // test.pack:Inner
 // test.pack:innerVal
-// test.pack:innerFoo
+// test.pack:Inner.innerFoo
 // test.pack:InnerLocal
+// test.pack:InnerLocal.<init>
+// test.pack:Inner.<init>
 // test.pack:Nested
 // test.pack:nestedVal
-// test.pack:nestedFoo
+// test.pack:Nested.nestedFoo
 // test.pack:a
+// test.pack:Nested.<init>
+// test.pack:Outer.<init>
 // test.java.pack:C
 // test.java.pack:Inner
+// test.java.pack:Inner.<init>
 // test.java.pack:Nested
+// test.java.pack:Nested.<init>
+// test.java.pack:C.<init>
 // END
 //FILE: a.kt
 package test.pack
@@ -54,7 +61,7 @@ class Outer {
     }
 }
 
-//FILE: C.java
+//FILE: test/java/pack/C.java
 package test.java.pack;
 
 public class C {

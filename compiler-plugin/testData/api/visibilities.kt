@@ -21,6 +21,7 @@
 // packageFun: JAVA_PACKAGE,visible in A, B, D: true, false, true
 // privateFun: PRIVATE,visible in A, B, D: false, false, false
 // protectedFun: PROTECTED,visible in A, B, D: true, false, true
+// <init>: PUBLIC,visible in A, B, D: true, true, true
 // END
 
 // FILE: a.kt

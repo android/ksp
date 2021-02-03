@@ -4,6 +4,7 @@
 // ErrorInMember invalid
 // goodProp valid
 // errorFun invalid
+// <init> valid
 // GoodClass valid
 // C valid
 // BadJavaClass invalid

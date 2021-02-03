@@ -65,7 +65,7 @@ class KSClassDeclarationJavaEnumEntryImpl private constructor(val psi: PsiEnumCo
     }
 
     override fun getAllFunctions(): List<KSFunctionDeclaration> =
-            descriptor?.getAllFunctions(true) ?: emptyList()
+            descriptor?.getAllFunctions() ?: emptyList()
 
     override fun getAllProperties(): List<KSPropertyDeclaration> =
             descriptor?.getAllProperties() ?: emptyList()

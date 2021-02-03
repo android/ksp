@@ -19,52 +19,59 @@
 // TEST PROCESSOR: AnnotationsInDependenciesProcessor
 // EXPECTED:
 // main.KotlinClass ->
-// main.KotlinClass : annotations.ClassTarget{[value = onClass]}
-// main.KotlinClass : annotations.NoTargetAnnotation{[value = onClass]}
-// myFun : annotations.FunctionTarget{[value = onMyFun]}
-// myFun : annotations.NoTargetAnnotation{[value = onMyFun]}
-// param1 : annotations.NoTargetAnnotation{[value = onParam1]}
-// param1 : annotations.ValueParameterTarget{[value = onParam1]}
-// param2 : annotations.NoTargetAnnotation{[value = onParam2]}
-// param2 : annotations.ValueParameterTarget{[value = onParam2]}
-// prop : annotations.FieldTarget2{[value = field:]}
-// prop : annotations.FieldTarget{[value = onProp]}
-// prop : annotations.NoTargetAnnotation{[value = onProp]}
-// prop : annotations.PropertyGetterTarget{[value = get:]}
-// prop : annotations.PropertySetterTarget{[value = set:]}
-// prop : annotations.PropertyTarget{[value = onProp]}
+// class main.KotlinClass : annotations.ClassTarget{[value = onClass]}
+// class main.KotlinClass : annotations.NoTargetAnnotation{[value = onClass]}
+// function myFun : annotations.FunctionTarget{[value = onMyFun]}
+// function myFun : annotations.NoTargetAnnotation{[value = onMyFun]}
+// parameter param1 : annotations.NoTargetAnnotation{[value = onParam1]}
+// parameter param1 : annotations.ValueParameterTarget{[value = onParam1]}
+// parameter param2 : annotations.NoTargetAnnotation{[value = onParam2]}
+// parameter param2 : annotations.ValueParameterTarget{[value = onParam2]}
+// property prop : annotations.FieldTarget2{[value = field:]}
+// property prop : annotations.FieldTarget{[value = onProp]}
+// property prop : annotations.NoTargetAnnotation{[value = onProp]}
+// property prop : annotations.PropertyGetterTarget{[value = get:]}
+// property prop : annotations.PropertySetterTarget{[value = set:]}
+// property prop : annotations.PropertyTarget{[value = onProp]}
 // lib.KotlinClass ->
-// lib.KotlinClass : annotations.ClassTarget{[value = onClass]}
-// lib.KotlinClass : annotations.NoTargetAnnotation{[value = onClass]}
-// myFun : annotations.FunctionTarget{[value = onMyFun]}
-// myFun : annotations.NoTargetAnnotation{[value = onMyFun]}
-// param1 : annotations.NoTargetAnnotation{[value = onParam1]}
-// param1 : annotations.ValueParameterTarget{[value = onParam1]}
-// param2 : annotations.NoTargetAnnotation{[value = onParam2]}
-// param2 : annotations.ValueParameterTarget{[value = onParam2]}
-// prop : annotations.FieldTarget2{[value = field:]}
-// prop : annotations.FieldTarget{[value = onProp]}
-// prop : annotations.NoTargetAnnotation{[value = onProp]}
-// prop : annotations.PropertyGetterTarget{[value = get:]}
-// prop : annotations.PropertySetterTarget{[value = set:]}
-// prop : annotations.PropertyTarget{[value = onProp]}
+// class lib.KotlinClass : annotations.ClassTarget{[value = onClass]}
+// class lib.KotlinClass : annotations.NoTargetAnnotation{[value = onClass]}
+// function myFun : annotations.FunctionTarget{[value = onMyFun]}
+// function myFun : annotations.NoTargetAnnotation{[value = onMyFun]}
+// parameter param1 : annotations.NoTargetAnnotation{[value = onParam1]}
+// parameter param1 : annotations.ValueParameterTarget{[value = onParam1]}
+// parameter param2 : annotations.NoTargetAnnotation{[value = onParam2]}
+// parameter param2 : annotations.ValueParameterTarget{[value = onParam2]}
+// property prop : annotations.FieldTarget2{[value = field:]}
+// property prop : annotations.FieldTarget{[value = onProp]}
+// property prop : annotations.NoTargetAnnotation{[value = onProp]}
+// property prop : annotations.PropertyGetterTarget{[value = get:]}
+// property prop : annotations.PropertySetterTarget{[value = set:]}
+// property prop : annotations.PropertyTarget{[value = onProp]}
 // main.DataClass ->
-// constructorParam : annotations.FieldTarget2{[value = field:]}
-// constructorParam : annotations.FieldTarget{[value = onConstructorParam]}
-// constructorParam : annotations.NoTargetAnnotation{[value = onConstructorParam]}
-// constructorParam : annotations.PropertyGetterTarget{[value = get:]}
-// constructorParam : annotations.PropertySetterTarget{[value = set:]}
-// constructorParam : annotations.PropertyTarget{[value = onConstructorParam]}
-// main.DataClass : annotations.ClassTarget{[value = onDataClass]}
-// main.DataClass : annotations.NoTargetAnnotation{[value = onDataClass]}
+// class main.DataClass : annotations.ClassTarget{[value = onDataClass]}
+// class main.DataClass : annotations.NoTargetAnnotation{[value = onDataClass]}
+// parameter constructorParam : annotations.FieldTarget2{[value = field:]}
+// parameter constructorParam : annotations.FieldTarget{[value = onConstructorParam]}
+// parameter constructorParam : annotations.NoTargetAnnotation{[value = onConstructorParam]}
+// parameter constructorParam : annotations.PropertyGetterTarget{[value = get:]}
+// parameter constructorParam : annotations.PropertySetterTarget{[value = set:]}
+// parameter constructorParam : annotations.PropertyTarget{[value = onConstructorParam]}
+// property constructorParam : annotations.FieldTarget2{[value = field:]}
+// property constructorParam : annotations.FieldTarget{[value = onConstructorParam]}
+// property constructorParam : annotations.NoTargetAnnotation{[value = onConstructorParam]}
+// property constructorParam : annotations.PropertyGetterTarget{[value = get:]}
+// property constructorParam : annotations.PropertySetterTarget{[value = set:]}
+// property constructorParam : annotations.PropertyTarget{[value = onConstructorParam]}
 // lib.DataClass ->
-// constructorParam : annotations.FieldTarget2{[value = field:]}
-// constructorParam : annotations.FieldTarget{[value = onConstructorParam]}
-// constructorParam : annotations.PropertyGetterTarget{[value = get:]}
-// constructorParam : annotations.PropertySetterTarget{[value = set:]}
-// constructorParam : annotations.PropertyTarget{[value = onConstructorParam]}
-// lib.DataClass : annotations.ClassTarget{[value = onDataClass]}
-// lib.DataClass : annotations.NoTargetAnnotation{[value = onDataClass]}
+// class lib.DataClass : annotations.ClassTarget{[value = onDataClass]}
+// class lib.DataClass : annotations.NoTargetAnnotation{[value = onDataClass]}
+// parameter constructorParam : annotations.NoTargetAnnotation{[value = onConstructorParam]}
+// property constructorParam : annotations.FieldTarget2{[value = field:]}
+// property constructorParam : annotations.FieldTarget{[value = onConstructorParam]}
+// property constructorParam : annotations.PropertyGetterTarget{[value = get:]}
+// property constructorParam : annotations.PropertySetterTarget{[value = set:]}
+// property constructorParam : annotations.PropertyTarget{[value = onConstructorParam]}
 // END
 // MODULE: annotations
 // FILE: Annotations.kt

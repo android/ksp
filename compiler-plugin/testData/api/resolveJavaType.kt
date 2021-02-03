@@ -17,7 +17,9 @@
 
 // TEST PROCESSOR: ResolveJavaTypeProcessor
 // EXPECTED:
+// C<*kotlin.Any?>
 // C.<init>.X?
+// C<*kotlin.Any?>
 // kotlin.Int
 // kotlin.String?
 // kotlin.collections.MutableSet<out kotlin.Any?>?

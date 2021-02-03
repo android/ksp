@@ -18,6 +18,7 @@
 
 package com.google.devtools.ksp.processor
 
+import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.symbol.impl.binary.KSTypeReferenceDescriptorImpl
@@ -36,7 +37,13 @@ open class PlatformDeclarationProcessor: AbstractTestProcessor() {
             it.accept(collector, declarations)
         }
 
-        declarations.sortedBy { "${it.containingFile?.fileName} : ${it.qualifiedName?.asString()}" }.forEach {
+        declarations
+            .filterNot {
+                // TODO we should figure out how constructors work in expect-actual world
+                //  expand this test to include constructors
+                it is KSFunctionDeclaration && it.isConstructor()
+            }
+            .sortedBy { "${it.containingFile?.fileName} : ${it.qualifiedName?.asString()}" }.forEach {
             val r = mutableListOf<Any?>()
             r.add(it.containingFile?.fileName)
             r.add(it.qualifiedName?.asString())

@@ -20,6 +20,7 @@ package com.google.devtools.ksp.processor
 
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.visitor.KSTopDownVisitor
 
 class JavaModifierProcessor : AbstractTestProcessor() {
@@ -44,22 +45,27 @@ class JavaModifierProcessor : AbstractTestProcessor() {
         }
 
         override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-            this.visitModifierListOwner(classDeclaration, data)
+            results.add(classDeclaration.toSignature())
             classDeclaration.declarations.map { it.accept(this, data) }
         }
 
         override fun visitPropertyDeclaration(property: KSPropertyDeclaration, data: Unit) {
-            this.visitModifierListOwner(property, data)
+            results.add(property.toSignature())
         }
 
         override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-            this.visitModifierListOwner(function, data)
+            results.add(function.toSignature())
         }
 
-        override fun visitModifierListOwner(modifierListOwner: KSModifierListOwner, data: Unit) {
-            results.add((modifierListOwner as KSDeclaration).simpleName.asString() + ": " +
-                                modifierListOwner.modifiers.map { it.toString() }.joinToString(" "))
+        private fun KSDeclaration.toSignature(): String {
+            val parent = parentDeclaration
+            val id = if (parent == null) {
+                ""
+            } else {
+                "${parent.simpleName.asString()}."
+            } + simpleName.asString()
+            val modifiersSignature = modifiers.map { it.toString() }.joinToString(" ")
+            return "$id: $modifiersSignature"
         }
-
     }
 }

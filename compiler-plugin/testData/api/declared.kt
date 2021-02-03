@@ -2,10 +2,13 @@
 // EXPECTED:
 // Base class declared functions:
 // subFun
+// synthetic constructor for Sub
 // Sub class declared functions:
 // baseFun
+// <init>
 // JavaSource class declared functions:
 // javaSourceFun
+// synthetic constructor for JavaSource
 // END
 // MODULE: module1
 // FILE: lib.kt
