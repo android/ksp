@@ -37,6 +37,16 @@ public class KotlinKSPTestGenerated extends AbstractKotlinKSPTest {
         KotlinTestUtils.runTest(this::doTest, this, testDataFilePath);
     }
 
+    @TestMetadata("annotatedUtil.kt")
+    public void testAnnotatedUtil() throws Exception {
+        runTest("testData/api/annotatedUtil.kt");
+    }
+
+    @TestMetadata("javaAnnotatedUtil.kt")
+    public void testJavaAnnotatedUtil() throws Exception {
+        runTest("testData/api/javaAnnotatedUtil.kt");
+    }
+
     @TestMetadata("allFunctions.kt")
     public void testAllFunctions() throws Exception {
         runTest("testData/api/allFunctions.kt");
