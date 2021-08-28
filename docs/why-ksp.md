@@ -25,8 +25,7 @@ KSP is designed to hide compiler changes, minimizing maintenance
 efforts for processors that use it. KSP is designed not to be tied to the
 JVM so that it can be adapted to other platforms more easily in the future.
 KSP is also designed to minimize build times. For some processors, such as
-[Glide](https://github.com/bumptech/glide), KSP reduces full compilation
-times by up to 25% when compared to KAPT.
+[Room](https://developer.android.com/training/data-storage/room), KSP is up to 2x faster than KAPT.
 
 KSP is itself implemented as a compiler plugin. There are prebuilt packages
 on Google's Maven repository that you can download and use without having
