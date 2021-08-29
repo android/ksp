@@ -17,9 +17,11 @@
 
 package com.google.devtools.ksp.symbol.impl.java
 
+import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSName
 import com.google.devtools.ksp.symbol.KSNode
+import com.google.devtools.ksp.symbol.impl.findParentAnnotated
 import com.google.devtools.ksp.symbol.impl.findParentDeclaration
 import com.google.devtools.ksp.symbol.impl.getDocString
 import com.intellij.psi.PsiElement
@@ -42,6 +44,6 @@ abstract class KSDeclarationJavaImpl(private val psi: PsiElement) : KSDeclaratio
     }
 
     override val parent: KSNode? by lazy {
-        parentDeclaration
+        psi.findParentAnnotated()
     }
 }

@@ -36,8 +36,6 @@ abstract class KSDeclarationDescriptorImpl(private val descriptor: DeclarationDe
         descriptor.origin
     }
 
-    override val containingFile: KSFile? = null
-
     override val location: Location = NonExistLocation
 
     override val annotations: Sequence<KSAnnotation> by lazy {

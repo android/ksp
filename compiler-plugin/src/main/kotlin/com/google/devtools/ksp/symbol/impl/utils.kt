@@ -222,10 +222,10 @@ fun PsiElement.findParentAnnotated(): KSAnnotated? {
 
     return when (parent) {
         is KtClassOrObject -> KSClassDeclarationImpl.getCached(parent)
-        is KtFile -> null
+        is KtFile -> KSFileImpl.getCached(parent)
         is KtFunction -> KSFunctionDeclarationImpl.getCached(parent)
         is PsiClass -> KSClassDeclarationJavaImpl.getCached(parent)
-        is PsiJavaFile -> null
+        is PsiJavaFile -> KSFileJavaImpl.getCached(parent)
         is PsiMethod -> KSFunctionDeclarationJavaImpl.getCached(parent)
         is KtProperty -> KSPropertyDeclarationImpl.getCached(parent)
         is KtPropertyAccessor -> if (parent.isGetter) { KSPropertyGetterImpl.getCached(parent) } else {

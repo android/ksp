@@ -26,8 +26,6 @@ object KSErrorTypeClassDeclaration : KSClassDeclaration {
 
     override val classKind: ClassKind = ClassKind.CLASS
 
-    override val containingFile: KSFile? = null
-
     override val declarations: Sequence<KSDeclaration> = emptySequence()
 
     override val isActual: Boolean = false

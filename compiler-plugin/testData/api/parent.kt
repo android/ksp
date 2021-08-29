@@ -1,7 +1,7 @@
 // TEST PROCESSOR: ParentProcessor
 // EXPECTED:
 // parent of File: a.kt: null
-// parent of Anno: null
+// parent of Anno: File: a.kt
 // parent of Anno: synthetic constructor for Anno
 // parent of synthetic constructor for Anno: Anno
 // parent of Int: Int
@@ -13,7 +13,7 @@
 // parent of Map: Map
 // parent of Map: Alias
 // parent of T: Alias
-// parent of Alias: null
+// parent of Alias: File: a.kt
 // parent of Int: Int
 // parent of Int: INVARIANT Int
 // parent of INVARIANT Int: List
@@ -28,21 +28,21 @@
 // parent of Anno: Anno
 // parent of Anno: @Anno
 // parent of @Anno: topProp
-// parent of topProp: null
+// parent of topProp: File: a.kt
 // parent of T: T
 // parent of T: topFun
 // parent of T: topFun
 // parent of Anno: Anno
 // parent of Anno: @Anno
 // parent of @Anno: topFun
-// parent of topFun: null
-// parent of ITF: null
+// parent of topFun: File: a.kt
+// parent of ITF: File: a.kt
 // parent of ITF: ITF
 // parent of ITF: topClass
 // parent of Anno: Anno
 // parent of Anno: @Anno
 // parent of @Anno: topClass
-// parent of topClass: null
+// parent of topClass: File: a.kt
 // parent of Int: Int
 // parent of Int: i
 // parent of i: memberFun
@@ -81,7 +81,7 @@
 // parent of T: B
 // parent of Anno: @Anno
 // parent of @Anno: B
-// parent of B: null
+// parent of B: File: B.java
 // parent of T: T
 // parent of T: t
 // parent of t: B

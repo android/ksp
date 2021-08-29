@@ -26,7 +26,6 @@ import com.google.devtools.ksp.symbol.impl.kotlin.KSExpectActualNoImpl
 import com.google.devtools.ksp.symbol.impl.kotlin.KSNameImpl
 import com.google.devtools.ksp.symbol.impl.kotlin.getKSTypeCached
 import com.intellij.psi.PsiEnumConstant
-import com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.types.typeUtil.replaceArgumentsWithStarProjections
 
@@ -49,10 +48,6 @@ class KSClassDeclarationJavaEnumEntryImpl private constructor(val psi: PsiEnumCo
     }
 
     override val classKind: ClassKind = ClassKind.ENUM_ENTRY
-
-    override val containingFile: KSFile? by lazy {
-        KSFileJavaImpl.getCached(psi.containingFile as PsiJavaFile)
-    }
 
     override val isCompanionObject = false
 
