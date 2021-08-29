@@ -17,7 +17,9 @@
 
 package com.google.devtools.ksp.symbol.impl.kotlin
 
+import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.symbol.impl.findParentAnnotated
 import com.google.devtools.ksp.symbol.impl.findParentDeclaration
 import com.google.devtools.ksp.symbol.impl.getDocString
 import com.google.devtools.ksp.symbol.impl.memoized
@@ -50,9 +52,6 @@ abstract class KSDeclarationImpl(val ktDeclaration: KtDeclaration) : KSDeclarati
         // see: https://github.com/google/ksp/issues/378
         ktDeclaration.toKSModifiers()
     }
-    override val containingFile: KSFile? by lazy {
-        KSFileImpl.getCached(ktDeclaration.containingKtFile)
-    }
 
     override val packageName: KSName by lazy {
         this.containingFile!!.packageName
@@ -68,8 +67,8 @@ abstract class KSDeclarationImpl(val ktDeclaration: KtDeclaration) : KSDeclarati
         ktDeclaration.findParentDeclaration()
     }
 
-    override val parent: KSDeclaration? by lazy {
-        parentDeclaration
+    override val parent: KSNode? by lazy {
+        ktDeclaration.findParentAnnotated()
     }
 
     override fun toString(): String {

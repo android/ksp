@@ -23,7 +23,6 @@ import com.google.devtools.ksp.symbol.impl.*
 import com.google.devtools.ksp.symbol.impl.kotlin.KSExpectActualNoImpl
 import com.google.devtools.ksp.symbol.impl.kotlin.KSNameImpl
 import com.intellij.psi.PsiField
-import com.intellij.psi.PsiJavaFile
 
 class KSPropertyDeclarationJavaImpl private constructor(val psi: PsiField) :
     KSPropertyDeclaration,
@@ -46,10 +45,6 @@ class KSPropertyDeclarationJavaImpl private constructor(val psi: PsiField) :
 
     override val annotations: Sequence<KSAnnotation> by lazy {
         psi.annotations.asSequence().map { KSAnnotationJavaImpl.getCached(it) }.memoized()
-    }
-
-    override val containingFile: KSFile? by lazy {
-        KSFileJavaImpl.getCached(psi.containingFile as PsiJavaFile)
     }
 
     override val extensionReceiver: KSTypeReference? = null

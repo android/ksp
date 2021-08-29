@@ -23,7 +23,6 @@ import com.google.devtools.ksp.symbol.FunctionKind
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
-import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSFunction
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSName
@@ -67,10 +66,6 @@ class KSConstructorSyntheticImpl(val ksClassDeclaration: KSClassDeclaration) :
     }
 
     override val typeParameters: List<KSTypeParameter> = emptyList()
-
-    override val containingFile: KSFile? by lazy {
-        ksClassDeclaration.containingFile
-    }
 
     override val parentDeclaration: KSDeclaration? by lazy {
         ksClassDeclaration

@@ -17,6 +17,7 @@
 
 package com.google.devtools.ksp.processor
 
+import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.*

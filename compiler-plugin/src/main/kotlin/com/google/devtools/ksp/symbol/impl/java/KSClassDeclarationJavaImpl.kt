@@ -30,7 +30,6 @@ import com.google.devtools.ksp.symbol.impl.replaceTypeArguments
 import com.google.devtools.ksp.symbol.impl.synthetic.KSConstructorSyntheticImpl
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiEnumConstant
-import com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.load.java.structure.impl.JavaClassImpl
 import org.jetbrains.kotlin.types.typeUtil.replaceArgumentsWithStarProjections
@@ -60,10 +59,6 @@ class KSClassDeclarationJavaImpl private constructor(val psi: PsiClass) :
             psi.isEnum -> ClassKind.ENUM_CLASS
             else -> ClassKind.CLASS
         }
-    }
-
-    override val containingFile: KSFile? by lazy {
-        KSFileJavaImpl.getCached(psi.containingFile as PsiJavaFile)
     }
 
     override val isCompanionObject = false

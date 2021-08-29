@@ -66,6 +66,20 @@ fun Resolver.getPropertyDeclarationByName(name: String, includeTopLevel: Boolean
     getPropertyDeclarationByName(getKSNameFromString(name), includeTopLevel)
 
 /**
+ * Find the containing file of a KSNode.
+ * @return KSFile if the given KSNode has a containing file.
+ * exmample of symbols without a containing file: symbols from class files, synthetic symbols craeted by user.
+ */
+val KSNode.containingFile: KSFile?
+    get() {
+        var parent = this.parent
+        while (parent != null && parent !is KSFile) {
+            parent = parent.parent
+        }
+        return parent as? KSFile?
+    }
+
+/**
  * Get functions directly declared inside the class declaration.
  *
  * What are included: member functions, constructors, extension functions declared inside it, etc.

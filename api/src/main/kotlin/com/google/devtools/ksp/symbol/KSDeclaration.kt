@@ -47,11 +47,6 @@ interface KSDeclaration : KSModifierListOwner, KSAnnotated, KSExpectActual {
     val parentDeclaration: KSDeclaration?
 
     /**
-     * The containing source file of this declaration, can be null if symbol does not come from a source file, i.e. from a class file.
-     */
-    val containingFile: KSFile?
-
-    /**
      * The doc string enclosed by \/\*\* and \*\/
      */
     val docString: String?

@@ -23,7 +23,6 @@ import com.google.devtools.ksp.symbol.impl.*
 import com.google.devtools.ksp.symbol.impl.kotlin.KSExpectActualNoImpl
 import com.google.devtools.ksp.symbol.impl.kotlin.KSNameImpl
 import com.intellij.lang.jvm.JvmModifier
-import com.intellij.psi.PsiJavaFile
 import com.intellij.psi.PsiMethod
 
 class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) :
@@ -42,10 +41,6 @@ class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) :
 
     override val annotations: Sequence<KSAnnotation> by lazy {
         psi.annotations.asSequence().map { KSAnnotationJavaImpl.getCached(it) }.memoized()
-    }
-
-    override val containingFile: KSFile? by lazy {
-        KSFileJavaImpl.getCached(psi.containingFile as PsiJavaFile)
     }
 
     override fun findOverridee(): KSDeclaration? {
