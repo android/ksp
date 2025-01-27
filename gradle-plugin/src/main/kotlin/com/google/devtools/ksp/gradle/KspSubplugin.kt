@@ -253,11 +253,6 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
         val kotlinCompileProvider: TaskProvider<AbstractKotlinCompileTool<*>> =
             project.locateTask(kotlinCompilation.compileKotlinTaskName) ?: return project.provider { emptyList() }
         val kspExtension = project.extensions.getByType(KspExtension::class.java)
-        val kspConfigurations = kspConfigurations.find(kotlinCompilation)
-        val nonEmptyKspConfigurations = kspConfigurations.filter { it.allDependencies.isNotEmpty() }
-        if (nonEmptyKspConfigurations.isEmpty()) {
-            return project.provider { emptyList() }
-        }
         if (kotlinCompileProvider.name == "compileKotlinMetadata") {
             return project.provider { emptyList() }
         }
@@ -300,6 +295,8 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
         assert(kotlinCompileProvider.name.startsWith("compile"))
         val kspTaskName = kotlinCompileProvider.name.replaceFirst("compile", "ksp")
 
+        val kspConfigurations = kspConfigurations.find(kotlinCompilation)
+        val nonEmptyKspConfigurations = kspConfigurations.filter { it.allDependencies.isNotEmpty() }
         val processorClasspath = project.configurations.maybeCreate("${kspTaskName}ProcessorClasspath")
             .extendsFrom(*nonEmptyKspConfigurations.toTypedArray()).markResolvable()
 

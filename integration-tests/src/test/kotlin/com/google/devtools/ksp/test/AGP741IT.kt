@@ -41,6 +41,91 @@ class AGP741IT(useKSP2: Boolean) {
         }
     }
 
+    /**
+     * Similar to ProcessorClasspathConfigurationsTest.testConfigurationsForAndroidApp(), but need to test with AGP
+     * version < 8.0.0 too because we use AGP's legacy Variant API in that case.
+     */
+    @Test
+    fun testConfigurationsForAndroidApp() {
+        val gradleRunner = GradleRunner.create().withProjectDir(project.root).withGradleVersion("7.6.3")
+
+        File(project.root, "gradle.properties").appendText("\nagpVersion=7.4.1")
+        File(project.root, "workload/build.gradle.kts").appendText(
+            """
+                android {
+                    flavorDimensions += listOf("tier", "region")
+
+                    productFlavors {
+                        create("free") {
+                            dimension = "tier"
+                        }
+                        create("premium") {
+                            dimension = "tier"
+                        }
+                        create("us") {
+                            dimension = "region"
+                        }
+                        create("eu") {
+                            dimension = "region"
+                        }
+                    }
+                }
+                configurations.matching { it.name.startsWith("ksp") && !it.name.endsWith("ProcessorClasspath") }.all {
+                    // Make sure ksp configs are not empty.
+                    project.dependencies.add(name, "androidx.room:room-compiler:2.4.2")
+                }
+                tasks.register("testConfigurations") {
+                    // Resolve all tasks to trigger classpath config creation
+                    dependsOn(tasks["tasks"])
+                    doLast {
+                        val freeUsDebugConfig = configurations["kspFreeUsDebugKotlinProcessorClasspath"]
+                        val testFreeUsDebugConfig = configurations["kspFreeUsDebugUnitTestKotlinProcessorClasspath"]
+                        val androidTestFreeUsDebugConfig =
+                            configurations["kspFreeUsDebugAndroidTestKotlinProcessorClasspath"]
+                        val freeUsDebugParentConfigs =
+                            setOf(
+                                "ksp",
+                                "kspDebug",
+                                "kspFree",
+                                "kspUs",
+                                "kspFreeUs",
+                                "kspFreeUsDebug"
+                            )
+                        val testFreeUsDebugParentConfigs =
+                            setOf(
+                                "ksp",
+                                "kspTest",
+                                "kspTestDebug",
+                                "kspTestFree",
+                                "kspTestUs",
+                                "kspTestFreeUs",
+                                "kspTestFreeUsDebug"
+                            )
+                        val androidTestFreeUsDebugParentConfigs =
+                            setOf(
+                                "ksp",
+                                "kspAndroidTest",
+                                "kspAndroidTestDebug",
+                                "kspAndroidTestFree",
+                                "kspAndroidTestUs",
+                                "kspAndroidTestFreeUs",
+                                "kspAndroidTestFreeUsDebug"
+                            )
+                        require(freeUsDebugConfig.extendsFrom.map { it.name }.toSet() == freeUsDebugParentConfigs)
+                        require(
+                            testFreeUsDebugConfig.extendsFrom.map { it.name }.toSet() == testFreeUsDebugParentConfigs
+                        )
+                        require(
+                            androidTestFreeUsDebugConfig.extendsFrom.map { it.name }.toSet() == androidTestFreeUsDebugParentConfigs
+                        )
+                    }
+                }
+            """.trimIndent()
+        )
+
+        gradleRunner.withArguments(":workload:testConfigurations").build()
+    }
+
     companion object {
         @JvmStatic
         @Parameterized.Parameters(name = "KSP2={0}")

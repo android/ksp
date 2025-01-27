@@ -1,5 +1,7 @@
 package com.google.devtools.ksp.gradle
 
+import com.google.devtools.ksp.gradle.AndroidPluginIntegration.setUpKspClasspathsForAndroidVariants
+import com.google.devtools.ksp.gradle.AndroidPluginIntegration.useLegacyVariantApi
 import org.gradle.api.InvalidUserCodeException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -14,6 +16,27 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 class KspConfigurations(private val project: Project) {
     companion object {
         private const val PREFIX = "ksp"
+
+        /**
+         * Returns the Android sourceSet-specific KSP configuration name given a [kotlinTarget] and [sourceSet].
+         *
+         * For single-platform, [kotlinTarget] can be null.
+         */
+        fun getAndroidConfigurationName(kotlinTarget: KotlinTarget?, sourceSet: String): String {
+            val isMain = sourceSet.endsWith("main", ignoreCase = true)
+            val nameWithoutMain = when {
+                isMain -> sourceSet.substring(0, sourceSet.length - 4)
+                else -> sourceSet
+            }
+            // Note: on single-platform, target name is conveniently set to "".
+            return configurationNameOf(PREFIX, kotlinTarget?.name ?: "", nameWithoutMain)
+        }
+
+        private fun configurationNameOf(vararg parts: String): String {
+            return parts.joinToString("") { part ->
+                part.replaceFirstChar { it.uppercase() }
+            }.replaceFirstChar { it.lowercase() }
+        }
     }
 
     private val allowAllTargetConfiguration =
@@ -29,11 +52,6 @@ class KspConfigurations(private val project: Project) {
         isVisible = false
     }
 
-    private fun configurationNameOf(vararg parts: String): String {
-        return parts.joinToString("") { part ->
-            part.replaceFirstChar { it.uppercase() }
-        }.replaceFirstChar { it.lowercase() }
-    }
 
     /**
      * Returns a new or existing [Configuration] with the given [name], with applied properties.
@@ -48,21 +66,6 @@ class KspConfigurations(private val project: Project) {
             isCanBeConsumed = false
             isVisible = false
         }
-    }
-
-    /**
-     * Returns the Android sourceSet-specific KSP configuration name given a [kotlinTarget] and [sourceSet].
-     *
-     * For single-platform, [kotlinTarget] can be null.
-     */
-    private fun getAndroidConfigurationName(kotlinTarget: KotlinTarget?, sourceSet: String): String {
-        val isMain = sourceSet.endsWith("main", ignoreCase = true)
-        val nameWithoutMain = when {
-            isMain -> sourceSet.substring(0, sourceSet.length - 4)
-            else -> sourceSet
-        }
-        // Note: on single-platform, target name is conveniently set to "".
-        return configurationNameOf(PREFIX, kotlinTarget?.name ?: "", nameWithoutMain)
     }
 
     private fun getKotlinConfigurationName(compilation: KotlinCompilation<*>, sourceSet: KotlinSourceSet): String {
@@ -99,6 +102,9 @@ class KspConfigurations(private val project: Project) {
             // FIXME: After KT-70897 is fixed and AGP's built-in Kotlin support adds a `kotlin` extension, call
             //  decorateKotlinProject here instead.
             createAndroidSourceSetConfigurations(project, kotlinTarget = null)
+        }
+        if (!useLegacyVariantApi) {
+            setUpKspClasspathsForAndroidVariants(project)
         }
     }
 
@@ -170,7 +176,7 @@ class KspConfigurations(private val project: Project) {
         compilation.kotlinSourceSets.mapTo(results) {
             getKotlinConfigurationName(compilation, it)
         }
-        if (compilation.platformType == KotlinPlatformType.androidJvm) {
+        if (compilation.platformType == KotlinPlatformType.androidJvm && useLegacyVariantApi) {
             compilation as KotlinJvmAndroidCompilation
             AndroidPluginIntegration.getCompilationSourceSets(compilation).mapTo(results) {
                 getAndroidConfigurationName(compilation.target, it)
