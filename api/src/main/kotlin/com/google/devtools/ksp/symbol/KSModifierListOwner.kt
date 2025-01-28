@@ -19,7 +19,7 @@ package com.google.devtools.ksp.symbol
 /**
  * A [KSModifierListOwner] can have zero or more modifiers.
  */
-interface KSModifierListOwner : KSNode {
+sealed interface KSModifierListOwner : KSNode {
     /**
      * The set of modifiers on this element.
      */

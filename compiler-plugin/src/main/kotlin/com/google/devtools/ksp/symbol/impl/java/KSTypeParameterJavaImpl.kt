@@ -35,6 +35,8 @@ class KSTypeParameterJavaImpl private constructor(val psi: PsiTypeParameter) :
         fun getCached(psi: PsiTypeParameter) = cache.getOrPut(psi) { KSTypeParameterJavaImpl(psi) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val origin = Origin.JAVA
 
     override val location: Location by lazy {

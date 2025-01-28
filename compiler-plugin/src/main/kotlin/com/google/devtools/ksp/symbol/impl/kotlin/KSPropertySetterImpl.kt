@@ -32,6 +32,8 @@ class KSPropertySetterImpl private constructor(ktPropertySetter: KtPropertyAcces
         }
     }
 
+    override fun asKSPropertyAccessor(): KSPropertyAccessor = this
+
     override val parameter: KSValueParameter by lazy {
         ktPropertySetter.parameterList?.parameters?.singleOrNull()?.let { KSValueParameterImpl.getCached(it) }
             ?: KSValueParameterSyntheticImpl.getCached(this) {

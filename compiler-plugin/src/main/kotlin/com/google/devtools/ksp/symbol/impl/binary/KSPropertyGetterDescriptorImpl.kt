@@ -29,6 +29,8 @@ class KSPropertyGetterDescriptorImpl private constructor(descriptor: PropertyGet
         }
     }
 
+    override fun asKSPropertyAccessor(): KSPropertyAccessor = this
+
     override val returnType: KSTypeReference? by lazy {
         if (descriptor.returnType != null) {
             KSTypeReferenceDescriptorImpl.getCached(descriptor.returnType!!, origin, this)

@@ -2,6 +2,7 @@ package com.google.devtools.ksp.impl.symbol.kotlin
 
 import com.google.devtools.ksp.common.KSObjectCache
 import com.google.devtools.ksp.impl.symbol.kotlin.resolved.KSTypeReferenceResolvedImpl
+import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSExpectActual
 import com.google.devtools.ksp.symbol.KSName
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
@@ -22,6 +23,8 @@ class KSPropertyDeclarationLocalVariableImpl private constructor(
         fun getCached(ktLocalVariableSymbol: KaLocalVariableSymbol) =
             cache.getOrPut(ktLocalVariableSymbol) { KSPropertyDeclarationLocalVariableImpl(ktLocalVariableSymbol) }
     }
+
+    override fun asKSDeclaration(): KSDeclaration = this
 
     override val getter: KSPropertyGetter? = null
 

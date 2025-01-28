@@ -19,7 +19,7 @@ package com.google.devtools.ksp.symbol
 /**
  * Base class of every visitable program elements.
  */
-interface KSNode {
+sealed interface KSNode {
     val origin: Origin
     val location: Location
     val parent: KSNode?

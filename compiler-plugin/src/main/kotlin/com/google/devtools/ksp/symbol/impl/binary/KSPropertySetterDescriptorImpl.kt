@@ -29,6 +29,8 @@ class KSPropertySetterDescriptorImpl private constructor(descriptor: PropertySet
         }
     }
 
+    override fun asKSPropertyAccessor(): KSPropertyAccessor = this
+
     override val parameter: KSValueParameter by lazy {
         descriptor.valueParameters.singleOrNull()?.let { KSValueParameterDescriptorImpl.getCached(it, this) }
             ?: throw IllegalStateException("Failed to resolve property type")
