@@ -85,7 +85,8 @@ interface CodeGenerator {
      * @param dependencies are [KSFile]s from which this output is built. Only those that are obtained directly
      *                     from [Resolver] are required.
      * @param path corresponds to the relative path of the generated file; includes the full file name
-     * @param fileType determines the target directory to store the file
+     * @param extensionName If "kt" or "java", this file will participate in subsequent compilation.
+     *                      Otherwise its creation is only considered in incremental processing.
      * @return OutputStream for writing into files.
      * @see [CodeGenerator] for more details.
      */
@@ -114,7 +115,8 @@ interface CodeGenerator {
      * @param sources are [KSFile]s from which this output is built. Only those that are obtained directly
      *                     from [Resolver] are required.
      * @param path corresponds to the relative path of the generated file; includes the full file name
-     * @param fileType determines the target directory where the file should exist
+     * @param extensionName If "kt" or "java", this file will participate in subsequent compilation.
+     *                      Otherwise its creation is only considered in incremental processing.
      * @see [CodeGenerator] for more details.
      */
     fun associateByPath(sources: List<KSFile>, path: String, extensionName: String = "kt")
