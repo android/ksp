@@ -22,7 +22,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$aaCoroutinesVersion")
 }
 
-fun Test.configureCommonSettings() {
+tasks.withType<Test> {
+    maxParallelForks = max(1, Runtime.getRuntime().availableProcessors() / 2)
     systemProperty("kotlinVersion", kotlinBaseVersion)
     systemProperty("kspVersion", version)
     systemProperty("agpVersion", agpTestVersion)
@@ -38,34 +39,4 @@ fun Test.configureCommonSettings() {
     dependsOn(":symbol-processing:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing-cmdline:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing-aa-embeddable:publishAllPublicationsToTestRepository")
-}
-
-val agpCompatibilityTestClasses = listOf("**/AGP731IT.class", "**/AGP741IT.class")
-
-// Create a new test task for the AGP compatibility tests
-val agpCompatibilityTest by tasks.registering(Test::class) {
-    description = "Runs AGP compatibility tests with maxParallelForks = 1"
-    group = "verification"
-
-    // Include only the AGP compatibility tests
-    include(agpCompatibilityTestClasses)
-
-    // Set maxParallelForks to 1 to avoid race conditions when downloading SDKs with old AGPs
-    maxParallelForks = 1
-
-    // Apply common settings
-    configureCommonSettings()
-}
-
-tasks.named<Test>("test") {
-    maxParallelForks = max(1, Runtime.getRuntime().availableProcessors() / 2)
-
-    // Exclude test classes from agpCompatibilityTest
-    exclude(agpCompatibilityTestClasses)
-
-    // Apply common settings
-    configureCommonSettings()
-
-    // Ensure that 'test' depends on 'compatibilityTest'
-    dependsOn(agpCompatibilityTest)
 }
