@@ -381,6 +381,9 @@ private fun KSAnnotation.createInvocationHandler(clazz: Class<*>): InvocationHan
                             if (result !is Array<*>) {
                                 val value = { result.asArray(method, clazz) }
                                 cache.getOrPut(Pair(method.returnType, value), value)
+                            } else if (method.returnType == result::class.java) {
+                                val value = { result }
+                                cache.getOrPut(Pair(method.returnType, value), value)
                             } else {
                                 throw IllegalStateException("unhandled value type, $ExceptionMessage")
                             }
