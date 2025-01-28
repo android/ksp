@@ -73,15 +73,18 @@ fun Resolver.getPropertyDeclarationByName(name: String, includeTopLevel: Boolean
 /**
  * Find the containing file of a KSNode.
  * @return KSFile if the given KSNode has a containing file.
- * exmample of symbols without a containing file: symbols from class files, synthetic symbols created by user.
+ * example of symbols without a containing file: symbols from class files, synthetic symbols created by user.
  */
 val KSNode.containingFile: KSFile?
     get() {
-        var parent = this.parent
-        while (parent != null && parent !is KSFile) {
-            parent = parent.parent
+        var current: KSNode? = this.parent
+        while (current != null) {
+            if (current is KSFile) {
+                return current
+            }
+            current = current.parent
         }
-        return parent as? KSFile?
+        return null
     }
 
 /**
