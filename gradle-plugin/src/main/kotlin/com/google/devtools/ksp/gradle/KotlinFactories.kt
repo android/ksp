@@ -185,6 +185,7 @@ interface KspTask : Task {
     @get:Internal
     val options: ListProperty<SubpluginOption>
 
+    @Deprecated("KSP is going to use compilation tasks created by KGP and no longer support this property.")
     @get:Nested
     val commandLineArgumentProviders: ListProperty<CommandLineArgumentProvider>
 
