@@ -250,19 +250,20 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
         val project = kotlinCompilation.target.project
+        project.afterEvaluate {
         val kotlinCompileProvider: TaskProvider<AbstractKotlinCompileTool<*>> =
-            project.locateTask(kotlinCompilation.compileKotlinTaskName) ?: return project.provider { emptyList() }
+            project.locateTask(kotlinCompilation.compileKotlinTaskName) ?: return@afterEvaluate
         val kspExtension = project.extensions.getByType(KspExtension::class.java)
         val kspConfigurations = kspConfigurations.find(kotlinCompilation)
         val nonEmptyKspConfigurations = kspConfigurations.filter { it.allDependencies.isNotEmpty() }
         if (nonEmptyKspConfigurations.isEmpty()) {
-            return project.provider { emptyList() }
+            return@afterEvaluate
         }
         if (kotlinCompileProvider.name == "compileKotlinMetadata") {
-            return project.provider { emptyList() }
+            return@afterEvaluate
         }
         if ((kotlinCompilation as? KotlinSharedNativeCompilation)?.platformType == KotlinPlatformType.common) {
-            return project.provider { emptyList() }
+            return@afterEvaluate
         }
 
         val target = kotlinCompilation.target.name
@@ -643,7 +644,7 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
                 resourcesOutputDir = project.files(resourceOutputDir)
             )
         }
-
+        }
         return project.provider { emptyList() }
     }
 
