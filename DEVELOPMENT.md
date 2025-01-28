@@ -1,5 +1,5 @@
 # Development HowTos
-This doc describes how KSP is implemented and how to test and debug it, as well as processors. Unless otherwised noted, it assumes running in Gradle.
+This doc describes how KSP is implemented and how to test and debug it, as well as processors. Unless otherwise noted, it assumes running in Gradle.
 
 ## KSP Processes / JVM Instances
 The Kotlin compiler has two main parts: Kotlin Gradle Plugin (KGP) and [the compiler itself](https://central.sonatype.com/artifact/org.jetbrains.kotlin/kotlin-compiler-embeddable).
