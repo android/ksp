@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 description = "Kotlin Symbol Processor"
@@ -126,6 +127,8 @@ java {
             resources.srcDir(testPropsOutDir)
         }
     }
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.named("compileTestKotlin").configure {
@@ -180,5 +183,8 @@ kotlin {
         main {
             kotlin.srcDir(writeVersionSrcTask)
         }
+    }
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }

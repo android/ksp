@@ -1,9 +1,10 @@
 import com.google.devtools.ksp.RelativizingInternalPathProvider
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import kotlin.math.max
 
 val junitVersion: String by project
 val kotlinBaseVersion: String by project
-val agpTestVersion: String by project
+val agpBaseVersion: String by project
 val aaCoroutinesVersion: String by project
 
 plugins {
@@ -25,7 +26,7 @@ dependencies {
 fun Test.configureCommonSettings() {
     systemProperty("kotlinVersion", kotlinBaseVersion)
     systemProperty("kspVersion", version)
-    systemProperty("agpVersion", agpTestVersion)
+    systemProperty("agpVersion", agpBaseVersion)
     jvmArgumentProviders.add(
         RelativizingInternalPathProvider(
             "testRepo",
@@ -68,4 +69,15 @@ tasks.named<Test>("test") {
 
     // Ensure that 'test' depends on 'compatibilityTest'
     dependsOn(agpCompatibilityTest)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
