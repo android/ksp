@@ -57,7 +57,7 @@ val agpCompatibilityTest by tasks.registering(Test::class) {
     configureCommonSettings()
 }
 
-tasks.named<Test>("test") {
+val chooseMeForMostTests by tasks.registering(Test::class) {
     maxParallelForks = max(1, Runtime.getRuntime().availableProcessors() / 2)
 
     // Exclude test classes from agpCompatibilityTest
@@ -66,6 +66,11 @@ tasks.named<Test>("test") {
     // Apply common settings
     configureCommonSettings()
 
-    // Ensure that 'test' depends on 'compatibilityTest'
+    // Workaround for an Android SDK downloading bug.
+    mustRunAfter(agpCompatibilityTest)
+}
+
+tasks.named<Test>("test") {
     dependsOn(agpCompatibilityTest)
+    dependsOn(chooseMeForMostTests)
 }
