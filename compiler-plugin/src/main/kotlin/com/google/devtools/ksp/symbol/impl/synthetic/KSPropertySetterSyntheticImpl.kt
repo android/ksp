@@ -32,6 +32,8 @@ class KSPropertySetterSyntheticImpl(val ksPropertyDeclaration: KSPropertyDeclara
             }
     }
 
+    override fun asKSPropertyAccessor(): KSPropertyAccessor = this
+
     private val descriptor: PropertyAccessorDescriptor by lazy {
         ResolverImpl.instance!!.resolvePropertyDeclaration(ksPropertyDeclaration)!!.setter!!
     }

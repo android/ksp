@@ -17,6 +17,9 @@ class KSPropertyDeclarationJavaImpl private constructor(val ktJavaFieldSymbol: K
         fun getCached(ktJavaFieldSymbol: KaJavaFieldSymbol): KSPropertyDeclaration =
             cache.getOrPut(ktJavaFieldSymbol) { KSPropertyDeclarationJavaImpl(ktJavaFieldSymbol) }
     }
+
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val getter: KSPropertyGetter?
         get() = null
 

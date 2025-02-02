@@ -21,7 +21,12 @@ import com.google.devtools.ksp.common.IncrementalContextBase
 import com.google.devtools.ksp.common.LookupStorageWrapper
 import com.google.devtools.ksp.common.LookupSymbolWrapper
 import com.google.devtools.ksp.common.LookupTrackerWrapper
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.google.devtools.ksp.symbol.KSTypeAlias
+import com.google.devtools.ksp.symbol.KSTypeParameter
 import com.google.devtools.ksp.symbol.impl.findPsi
 import com.google.devtools.ksp.symbol.impl.java.KSFunctionDeclarationJavaImpl
 import com.google.devtools.ksp.symbol.impl.java.KSPropertyDeclarationJavaImpl
@@ -200,6 +205,9 @@ class IncrementalContext(
         when (declaration) {
             is KSPropertyDeclarationJavaImpl -> recordLookupForJavaField(declaration.psi)
             is KSFunctionDeclarationJavaImpl -> recordLookupForJavaMethod(declaration.psi)
+            is KSClassDeclaration, is KSFunctionDeclaration, is KSPropertyDeclaration, is KSTypeAlias,
+            is KSTypeParameter,
+            -> Unit
         }
     }
 }

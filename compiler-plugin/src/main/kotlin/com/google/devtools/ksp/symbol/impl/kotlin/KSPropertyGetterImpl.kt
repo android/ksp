@@ -33,6 +33,8 @@ class KSPropertyGetterImpl private constructor(ktPropertyGetter: KtPropertyAcces
         }
     }
 
+    override fun asKSPropertyAccessor(): KSPropertyAccessor = this
+
     override val returnType: KSTypeReference? by lazy {
         val property = ktPropertyGetter.property
         if (property.typeReference != null) {

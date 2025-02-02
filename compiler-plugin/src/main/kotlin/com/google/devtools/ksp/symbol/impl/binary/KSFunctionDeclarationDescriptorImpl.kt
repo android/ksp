@@ -37,6 +37,8 @@ class KSFunctionDeclarationDescriptorImpl private constructor(val descriptor: Fu
             cache.getOrPut(descriptor) { KSFunctionDeclarationDescriptorImpl(descriptor) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override fun findOverridee(): KSDeclaration? {
         return descriptor.findClosestOverridee()?.toKSDeclaration()
     }

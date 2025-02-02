@@ -25,7 +25,7 @@ import com.google.devtools.ksp.symbol.impl.toKSModifiers
 import com.google.devtools.ksp.symbol.impl.toLocation
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 
-abstract class KSPropertyAccessorImpl(val ktPropertyAccessor: KtPropertyAccessor) : KSPropertyAccessor {
+abstract class KSPropertyAccessorImpl(val ktPropertyAccessor: KtPropertyAccessor) /*: KSPropertyAccessor*/ {
     companion object {
         fun getCached(ktPropertyAccessor: KtPropertyAccessor): KSPropertyAccessor {
             return if (ktPropertyAccessor.isGetter) {
@@ -35,27 +35,30 @@ abstract class KSPropertyAccessorImpl(val ktPropertyAccessor: KtPropertyAccessor
             }
         }
     }
-    override val receiver: KSPropertyDeclaration by lazy {
+
+    protected abstract fun asKSPropertyAccessor(): KSPropertyAccessor
+
+    /*override*/ val receiver: KSPropertyDeclaration by lazy {
         KSPropertyDeclarationImpl.getCached(ktPropertyAccessor.property)
     }
-    override val annotations: Sequence<KSAnnotation> by lazy {
+    /*override*/ val annotations: Sequence<KSAnnotation> by lazy {
         ktPropertyAccessor.filterUseSiteTargetAnnotations().map { KSAnnotationImpl.getCached(it) }
-            .plus(this.findAnnotationFromUseSiteTarget())
+            .plus(this.asKSPropertyAccessor().findAnnotationFromUseSiteTarget())
     }
 
-    override val parent: KSNode? by lazy {
+    /*override*/ val parent: KSNode? by lazy {
         receiver
     }
 
-    override val location: Location by lazy {
+    /*override*/ val location: Location by lazy {
         ktPropertyAccessor.toLocation()
     }
 
-    override val modifiers: Set<Modifier> by lazy {
+    /*override*/ val modifiers: Set<Modifier> by lazy {
         ktPropertyAccessor.toKSModifiers()
     }
 
-    override val declarations: Sequence<KSDeclaration> by lazy {
+    /*override*/ val declarations: Sequence<KSDeclaration> by lazy {
         if (!ktPropertyAccessor.hasBlockBody()) {
             emptySequence()
         } else {
@@ -64,11 +67,7 @@ abstract class KSPropertyAccessorImpl(val ktPropertyAccessor: KtPropertyAccessor
         }
     }
 
-    override val origin: Origin = Origin.KOTLIN
-
-    override fun <D, R> accept(visitor: KSVisitor<D, R>, data: D): R {
-        return visitor.visitPropertyAccessor(this, data)
-    }
+    /*override*/ val origin: Origin = Origin.KOTLIN
 
     internal val originalAnnotations: List<KSAnnotation> by lazy {
         ktPropertyAccessor.annotationEntries.map { KSAnnotationImpl.getCached(it) }

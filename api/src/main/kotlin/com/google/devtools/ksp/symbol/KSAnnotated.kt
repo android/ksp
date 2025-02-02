@@ -19,7 +19,7 @@ package com.google.devtools.ksp.symbol
 /**
  * A symbol that can be annotated with annotations.
  */
-interface KSAnnotated : KSNode {
+sealed interface KSAnnotated : KSNode {
 
     /**
      * All annotations on this symbol.

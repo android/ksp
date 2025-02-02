@@ -40,6 +40,8 @@ class KSTypeParameterImpl private constructor(
             }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val name: KSName by lazy {
         KSNameImpl.getCached(ktTypeParameterSymbol.name.asString())
     }

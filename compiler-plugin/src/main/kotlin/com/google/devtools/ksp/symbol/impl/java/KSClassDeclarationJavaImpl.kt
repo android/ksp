@@ -47,6 +47,8 @@ class KSClassDeclarationJavaImpl private constructor(val psi: PsiClass) :
         fun getCached(psi: PsiClass) = cache.getOrPut(psi) { KSClassDeclarationJavaImpl(psi) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val origin = Origin.JAVA
 
     override val location: Location by lazy {

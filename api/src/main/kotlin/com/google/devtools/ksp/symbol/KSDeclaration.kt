@@ -19,7 +19,7 @@ package com.google.devtools.ksp.symbol
 /**
  * A declaration, can be function declaration, class declaration and property declaration, or a type alias.
  */
-interface KSDeclaration : KSModifierListOwner, KSAnnotated, KSExpectActual {
+sealed interface KSDeclaration : KSModifierListOwner, KSAnnotated, KSExpectActual {
     /**
      * Simple name of this declaration, usually the name identifier at the declaration site.
      */

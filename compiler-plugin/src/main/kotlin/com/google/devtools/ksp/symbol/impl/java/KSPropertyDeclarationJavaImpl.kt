@@ -36,6 +36,8 @@ class KSPropertyDeclarationJavaImpl private constructor(val psi: PsiField) :
         fun getCached(psi: PsiField) = cache.getOrPut(psi) { KSPropertyDeclarationJavaImpl(psi) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val origin = Origin.JAVA
 
     override val location: Location by lazy {

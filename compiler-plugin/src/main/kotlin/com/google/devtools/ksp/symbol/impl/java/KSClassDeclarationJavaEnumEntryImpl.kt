@@ -41,6 +41,8 @@ class KSClassDeclarationJavaEnumEntryImpl private constructor(val psi: PsiEnumCo
         fun getCached(psi: PsiEnumConstant) = cache.getOrPut(psi) { KSClassDeclarationJavaEnumEntryImpl(psi) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val origin = Origin.JAVA
 
     override val location: Location by lazy {

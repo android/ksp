@@ -38,6 +38,8 @@ class KSFunctionDeclarationJavaImpl private constructor(val psi: PsiMethod) :
         fun getCached(psi: PsiMethod) = cache.getOrPut(psi) { KSFunctionDeclarationJavaImpl(psi) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val origin = Origin.JAVA
 
     override val location: Location by lazy {

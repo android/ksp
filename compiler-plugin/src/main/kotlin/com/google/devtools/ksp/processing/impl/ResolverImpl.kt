@@ -668,6 +668,11 @@ class ResolverImpl(
                     resolverContext = resolverContext
                         .childForClassOrPackage(resolveJavaDeclaration(e.psi) as ClassDescriptor, JavaClassImpl(e.psi))
                 }
+                is KSClassDeclaration, is KSFunctionDeclaration, is KSPropertyDeclaration, is KSTypeAlias,
+                is KSTypeParameter, is KSFile, is KSPropertyGetter, is KSPropertySetter, is KSTypeArgument,
+                is KSTypeReference, is KSValueArgument, is KSValueParameter, is KSAnnotation, is KSCallableReference,
+                is KSClassifierReference, is KSDefNonNullReference, is KSDynamicReference, is KSParenthesizedReference,
+                -> Unit
             }
         }
         return if (javaType is JavaArrayTypeImpl)
@@ -1250,6 +1255,7 @@ class ResolverImpl(
                         if (declaration.isAbstract)
                             modifiers.add(Modifier.ABSTRACT)
                     }
+                    is KSTypeAlias, is KSTypeParameter -> Unit
                 }
             }
             Origin.KOTLIN_LIB, Origin.JAVA_LIB -> {
@@ -1266,6 +1272,7 @@ class ResolverImpl(
                         if (declaration.jvmAccessFlag and Opcodes.ACC_SYNCHRONIZED != 0)
                             modifiers.add(Modifier.JAVA_SYNCHRONIZED)
                     }
+                    is KSClassDeclaration, is KSTypeAlias, is KSTypeParameter -> Unit
                 }
             }
             else -> Unit

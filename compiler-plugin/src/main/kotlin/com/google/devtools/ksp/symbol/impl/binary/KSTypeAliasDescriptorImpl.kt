@@ -16,6 +16,8 @@ class KSTypeAliasDescriptorImpl(descriptor: TypeAliasDescriptor) :
         }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val name: KSName by lazy {
         KSNameImpl.getCached(descriptor.name.asString())
     }

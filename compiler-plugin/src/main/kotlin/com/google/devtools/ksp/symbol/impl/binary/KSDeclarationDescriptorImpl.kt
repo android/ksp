@@ -30,21 +30,23 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.parents
 import org.jetbrains.kotlin.resolve.descriptorUtil.parentsWithSelf
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
-abstract class KSDeclarationDescriptorImpl(private val descriptor: DeclarationDescriptor) : KSDeclaration {
+abstract class KSDeclarationDescriptorImpl(private val descriptor: DeclarationDescriptor) /*: KSDeclaration*/ {
+    abstract fun asKSDeclaration(): KSDeclaration
 
-    override val origin by lazy {
+    /*override*/ val origin by lazy {
         descriptor.origin
     }
 
-    override val containingFile: KSFile? = null
+    /*override*/ val containingFile: KSFile? = null
 
-    override val location: Location = NonExistLocation
+    /*override*/ val location: Location = NonExistLocation
 
-    override val annotations: Sequence<KSAnnotation> by lazy {
-        descriptor.annotations.asSequence().map { KSAnnotationDescriptorImpl.getCached(it, this) }.memoized()
+    open /*override*/ val annotations: Sequence<KSAnnotation> by lazy {
+        descriptor.annotations.asSequence().map { KSAnnotationDescriptorImpl.getCached(it, this.asKSDeclaration()) }
+            .memoized()
     }
 
-    override val parentDeclaration: KSDeclaration? by lazy {
+    open /*override*/ val parentDeclaration: KSDeclaration? by lazy {
         val containingDescriptor = descriptor.parents.first()
         when (containingDescriptor) {
             is ClassDescriptor -> KSClassDeclarationDescriptorImpl.getCached(containingDescriptor)
@@ -53,19 +55,19 @@ abstract class KSDeclarationDescriptorImpl(private val descriptor: DeclarationDe
         }
     }
 
-    override val parent: KSNode? by lazy {
+    /*override*/ val parent: KSNode? by lazy {
         parentDeclaration
     }
 
-    override val packageName: KSName by lazy {
+    /*override*/ val packageName: KSName by lazy {
         KSNameImpl.getCached(descriptor.findPackage().fqName.asString())
     }
 
-    override val qualifiedName: KSName by lazy {
+    /*override*/ val qualifiedName: KSName by lazy {
         KSNameImpl.getCached(descriptor.fqNameSafe.asString())
     }
 
-    override val simpleName: KSName by lazy {
+    /*override*/ val simpleName: KSName by lazy {
         KSNameImpl.getCached(descriptor.name.asString())
     }
 
@@ -73,7 +75,7 @@ abstract class KSDeclarationDescriptorImpl(private val descriptor: DeclarationDe
         return this.simpleName.asString()
     }
 
-    override val docString = null
+    /*override*/ val docString: String? = null
 }
 
 val DeclarationDescriptor.origin: Origin

@@ -31,6 +31,8 @@ class KSTypeAliasImpl private constructor(private val ktTypeAliasSymbol: KaTypeA
             cache.getOrPut(ktTypeAliasSymbol) { KSTypeAliasImpl(ktTypeAliasSymbol) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val name: KSName by lazy {
         KSNameImpl.getCached(ktTypeAliasSymbol.nameOrAnonymous.asString())
     }

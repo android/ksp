@@ -19,7 +19,7 @@ package com.google.devtools.ksp.symbol
 /**
  * A declaration container can have a list of declarations declared in it.
  */
-interface KSDeclarationContainer : KSNode {
+sealed interface KSDeclarationContainer : KSNode {
     /**
      * Declarations that are lexically declared inside the current container.
      */

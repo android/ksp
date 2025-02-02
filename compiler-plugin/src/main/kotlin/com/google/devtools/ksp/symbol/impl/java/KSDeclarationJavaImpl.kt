@@ -25,24 +25,26 @@ import com.google.devtools.ksp.symbol.impl.findParentDeclaration
 import com.google.devtools.ksp.symbol.impl.getDocString
 import com.intellij.psi.PsiElement
 
-abstract class KSDeclarationJavaImpl(private val psi: PsiElement) : KSDeclaration {
-    override val packageName: KSName by lazy {
-        this.containingFile!!.packageName
+abstract class KSDeclarationJavaImpl(private val psi: PsiElement) /*: KSDeclaration*/ {
+    protected abstract fun asKSDeclaration(): KSDeclaration
+
+    /*override*/ val packageName: KSName by lazy {
+        this.asKSDeclaration().containingFile!!.packageName
     }
 
     override fun toString(): String {
-        return this.simpleName.asString()
+        return this.asKSDeclaration().simpleName.asString()
     }
 
-    override val docString by lazy {
+    /*override*/ val docString by lazy {
         psi.getDocString()
     }
 
-    override val parentDeclaration: KSDeclaration? by lazy {
+    open /*override*/ val parentDeclaration: KSDeclaration? by lazy {
         psi.findParentDeclaration()
     }
 
-    override val parent: KSNode? by lazy {
+    /*override*/ val parent: KSNode? by lazy {
         psi.findParentAnnotated()
     }
 }

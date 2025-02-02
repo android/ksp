@@ -32,6 +32,8 @@ class KSClassDeclarationEnumEntryImpl private constructor(private val ktEnumEntr
             cache.getOrPut(ktEnumEntrySymbol) { KSClassDeclarationEnumEntryImpl(ktEnumEntrySymbol) }
     }
 
+    override fun asKSDeclaration(): KSDeclaration = this
+
     override val qualifiedName: KSName? by lazy {
         KSNameImpl.getCached("${this.parentDeclaration!!.qualifiedName!!.asString()}.${simpleName.asString()}")
     }
