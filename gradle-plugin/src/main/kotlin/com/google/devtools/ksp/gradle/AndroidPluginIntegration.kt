@@ -49,7 +49,7 @@ object AndroidPluginIntegration {
     private fun decorateAndroidExtension(project: Project, onSourceSet: (String) -> Unit) {
         val sourceSets = when (val androidExt = project.extensions.getByName("android")) {
             is BaseExtension -> androidExt.sourceSets
-            is CommonExtension<*, *, *, *> -> androidExt.sourceSets
+            is CommonExtension<*, *, *, *, *, *> -> androidExt.sourceSets
             else -> throw RuntimeException("Unsupported Android Gradle plugin version.")
         }
         sourceSets.all {
@@ -154,5 +154,29 @@ object AndroidPluginIntegration {
             classOutputDir,
             resourcesOutputDir
         )
+    }
+
+    /**
+     * Returns false for AGP versions 8.10.0-alpha01 or higher.
+     *
+     * Returns true for older AGP versions or when AGP version cannot be determined.
+     */
+    val useLegacyVariantApi: Boolean by lazy {
+        val agpVersion = try {
+            val versionClass = Class.forName("com.android.Version")
+            val versionField = versionClass.getField("ANDROID_GRADLE_PLUGIN_VERSION")
+            versionField.get(null) as String
+        } catch (e: Exception) {
+            // AGP not applied or version field not found
+            null
+        }
+
+        // Fall back to using the legacy Variant API if can't determine AGP version for now
+        if (agpVersion == null) {
+            return@lazy true
+        }
+        val agpMajorVersion = agpVersion.split(".").getOrNull(0)?.toIntOrNull() ?: 0
+        val agpMinorVersion = agpVersion.split(".").getOrNull(1)?.toIntOrNull() ?: 0
+        return@lazy agpMajorVersion < 8 || agpMajorVersion == 8 && agpMinorVersion < 10
     }
 }

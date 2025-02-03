@@ -1,5 +1,7 @@
 package com.google.devtools.ksp.gradle
 
+import com.android.build.gradle.api.AndroidBasePlugin
+import com.google.devtools.ksp.gradle.AndroidPluginIntegration.useLegacyVariantApi
 import org.gradle.api.InvalidUserCodeException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -100,6 +102,13 @@ class KspConfigurations(private val project: Project) {
             //  decorateKotlinProject here instead.
             createAndroidSourceSetConfigurations(project, kotlinTarget = null)
         }
+        if (!useLegacyVariantApi) {
+            project.plugins.withType(AndroidBasePlugin::class.java) {
+                val androidComponents =
+                    project.extensions.findByType(com.android.build.api.variant.AndroidComponentsExtension::class.java)
+                androidComponents?.addKspConfigurations(useGlobalConfiguration = allowAllTargetConfiguration)
+            }
+        }
     }
 
     private fun decorateKotlinProject(kotlin: KotlinProjectExtension, project: Project) {
@@ -139,7 +148,9 @@ class KspConfigurations(private val project: Project) {
      */
     private fun decorateKotlinTarget(target: KotlinTarget) {
         if (target.platformType == KotlinPlatformType.androidJvm) {
-            createAndroidSourceSetConfigurations(target.project, target)
+            if (useLegacyVariantApi) {
+                createAndroidSourceSetConfigurations(target.project, target)
+            }
         } else {
             target.compilations.configureEach { compilation ->
                 compilation.kotlinSourceSetsObservable.forAll { sourceSet ->
