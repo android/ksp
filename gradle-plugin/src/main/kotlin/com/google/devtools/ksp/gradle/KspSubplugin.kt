@@ -57,7 +57,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinCommonCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinSharedNativeCompilation
@@ -360,16 +359,8 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
                     )
                 }
             } else {
-                val filteredTasks =
-                    kspExtension.excludedSources.buildDependencies.getDependencies(null).map { it.name }
                 kotlinCompilation.allKotlinSourceSetsObservable.forAll { sourceSet ->
-                    kspTask.setSource(
-                        sourceSet.kotlin.srcDirs.filter {
-                            !kotlinOutputDir.isParentOf(it) && !javaOutputDir.isParentOf(it) &&
-                                it !in kspExtension.excludedSources
-                        }
-                    )
-                    kspTask.dependsOn(sourceSet.kotlin.nonSelfDeps(kspTaskName).filter { it.name !in filteredTasks })
+                    kspTask.setSource(sourceSet.kotlin.sourceDirectories)
                 }
             }
 
@@ -603,13 +594,7 @@ class KspGradleSubplugin @Inject internal constructor(private val registry: Tool
             project.files(kotlinOutputDir).builtBy(kspTaskProvider),
             project.files(javaOutputDir).builtBy(kspTaskProvider),
         )
-        if (kotlinCompilation is KotlinCommonCompilation) {
-            // Do not add generated sources to common source sets.
-            // They will be observed by downstreams and violate current build scheme.
-            kotlinCompileProvider.configure { it.source(*generatedSources) }
-        } else {
-            kotlinCompilation.defaultSourceSet.kotlin.srcDirs(*generatedSources)
-        }
+        kotlinCompileProvider.configure { it.source(*generatedSources) }
 
         kotlinCompileProvider.configure { kotlinCompile ->
             when (kotlinCompile) {

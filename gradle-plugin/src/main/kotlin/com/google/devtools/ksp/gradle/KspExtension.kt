@@ -43,6 +43,7 @@ abstract class KspExtension @Inject constructor(project: Project) {
 
     // Specify sources that should be excluded from KSP.
     // If you have a task that generates sources, you can call `ksp.excludedSources.from(task)`.
+    // TODO - Deprecate and then remove this DSL?
     abstract val excludedSources: ConfigurableFileCollection
 
     open val arguments: Map<String, String> get() = apOptions.get()
