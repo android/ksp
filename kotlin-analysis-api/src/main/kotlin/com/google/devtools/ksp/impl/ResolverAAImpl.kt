@@ -279,25 +279,16 @@ class ResolverAAImpl(
     @KspExperimental
     override fun getDeclarationsFromPackage(packageName: String): Sequence<KSDeclaration> {
         return analyze {
-            val packageNames = FqName(packageName).pathSegments().map { it.asString() }
-            var packages = listOf(useSiteSession.rootPackageSymbol)
-            for (curName in packageNames) {
-                packages = packages
-                    .flatMap { it.packageScope.getPackageSymbols { it.asString() == curName } }
-                    .distinct()
-            }
-            packages.flatMap {
-                it.packageScope.declarations.distinct().mapNotNull { symbol ->
-                    when (symbol) {
-                        is KaNamedClassSymbol -> KSClassDeclarationImpl.getCached(symbol)
-                        is KaFunctionSymbol -> KSFunctionDeclarationImpl.getCached(symbol)
-                        is KaPropertySymbol -> KSPropertyDeclarationImpl.getCached(symbol)
-                        is KaTypeAliasSymbol -> KSTypeAliasImpl.getCached(symbol)
-                        is KaJavaFieldSymbol -> KSPropertyDeclarationJavaImpl.getCached(symbol)
-                        else -> null
-                    }
+            findPackage(FqName(packageName))?.packageScope?.declarations?.distinct()?.mapNotNull { symbol ->
+                when (symbol) {
+                    is KaNamedClassSymbol -> KSClassDeclarationImpl.getCached(symbol)
+                    is KaFunctionSymbol -> KSFunctionDeclarationImpl.getCached(symbol)
+                    is KaPropertySymbol -> KSPropertyDeclarationImpl.getCached(symbol)
+                    is KaTypeAliasSymbol -> KSTypeAliasImpl.getCached(symbol)
+                    is KaJavaFieldSymbol -> KSPropertyDeclarationJavaImpl.getCached(symbol)
+                    else -> null
                 }
-            }.asSequence()
+            }?.asSequence() ?: emptySequence()
         }
     }
 

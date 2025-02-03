@@ -714,4 +714,10 @@ class KSPAATest : AbstractKSPAATest() {
     fun testExitCode() {
         runTest("../test-utils/testData/api/exitCode.kt")
     }
+
+    @TestMetadata("packageProviderForGenerated.kt")
+    @Test
+    fun testPackageProviderForGenerated() {
+        runTest("../test-utils/testData/api/packageProviderForGenerated.kt")
+    }
 }
